@@ -1,11 +1,12 @@
-import React from 'react';
+import React from 'react'
 
 const Controls = () => {
   return (
     <div>
-      <p>This will show the controls, for length of break and length of time</p>
+      <span>➖</span>
+      <span>➕</span>
     </div>
-  );
-};
+  )
+}
 
-export default Controls;
+export default Controls
