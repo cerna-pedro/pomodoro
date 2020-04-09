@@ -12,5 +12,3 @@ Well, not that the other ones I found online weren't done right, they just were 
 Okay, enough of that, if you have not heard about the pomodoro technique, check [this link](https://en.wikipedia.org/wiki/Pomodoro_Technique "Pomodoro Technique") out.
 
 Enjoy! 😊
-
-test
