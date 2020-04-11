@@ -1,19 +1,20 @@
 import React from 'react';
 
 const Pie = (props) => {
-  const beforeColor = {
+  const pieStyle = {
     backgroundColor: props.runTime / props.time < 0.5 ? '#c72230' : 'inherit',
     transform:
-      (props.runTime / props.time) < 0.5
-        ? `rotate(${1-props.runTime / props.time-.5}turn)`
-        : `rotate(${1-props.runTime / props.time}turn)`,
+      props.runTime / props.time < 0.5
+        ? `rotate(${1 - props.runTime / props.time - 0.5}turn)`
+        : `rotate(${1 - props.runTime / props.time}turn)`,
   };
+
   return (
-    <div className='pieContainer'>
+    <div className='pie__container'>
       <div className='pie'>
-        <div className='before' style={beforeColor}></div>
+        <div className='pie__before' style={pieStyle}></div>
       </div>
-      <p>{props.runTime / props.time}</p>
+      <div className="pie__controls" onClick={props.toggleRunning}>{props.running ? <span>⏸</span> : <span>▶️</span>}</div>
     </div>
   );
 };
