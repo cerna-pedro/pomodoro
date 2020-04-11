@@ -14,7 +14,7 @@ const Pie = (props) => {
       <div className='pie'>
         <div className='pie__before' style={pieStyle}></div>
       </div>
-      <div className="pie__controls" onClick={props.toggleRunning}>{props.running ? <span>⏸</span> : <span>▶️</span>}</div>
+      <div className="pie__controls" onClick={props.toggleRunning} onMouseDown={props.startReset}>{props.running ? <span>⏸</span> : <span>▶️</span>}</div>
     </div>
   );
 };

@@ -1,12 +1,12 @@
-import React from 'react'
+import React from 'react';
 
-const Controls = () => {
+const Controls = (props) => {
   return (
-    <div>
-      <span>➖</span>
-      <span>➕</span>
+    <div className="controls">
+      <span onClick={() => props.decrement(props.name)}>➖</span>
+      <span onClick={() => props.increment(props.name)}>➕</span>
     </div>
-  )
-}
+  );
+};
 
-export default Controls
+export default Controls;

@@ -8,18 +8,37 @@ import Break from './components/Break';
 
 export class App extends Component {
   state = {
-    runTime: 900,
+    runTime: 1500,
     time: 1500,
     break: 300,
     longBreak: 900,
     running: false,
-    info: true,
+    info: false,
     pomodoros: [],
   };
-  toggleRunning = (e) => {
-    console.log(e);
+  startReset = () => {
+    console.log('mousedown');
+  };
+  toggleInfo = (e) => {
+    if (
+      e.target.className === 'info__button' ||
+      e.target.className === 'info__overlay'
+    ) {
+      this.setState({ info: !this.state.info });
+    }
+  };
+  toggleRunning = () => {
     this.setState({ running: !this.state.running });
   };
+  decrement = (name) => {
+    const updated = parseInt(this.state[name]);
+    this.setState({ [name]: updated - 1 });
+  };
+  increment = (name) => {
+    const updated = parseInt(this.state[name]);
+    this.setState({ [name]: updated + 1 });
+  };
+
   render() {
     return (
       <div className='inner'>
@@ -31,12 +50,34 @@ export class App extends Component {
           toggleRunning={this.toggleRunning}
           running={this.state.running}
         />
-        {!this.state.running && <Break duration={this.state.break} />}
-        {!this.state.running && <Break duration={this.state.longBreak} />}
-        {!this.state.running && <Break duration={this.state.time} />}
-
+        {!this.state.running && (
+          <Break
+            name='break'
+            duration={this.state.break}
+            increment={this.increment}
+            decrement={this.decrement}
+          />
+        )}
+        {!this.state.running && (
+          <Break
+            name='longBreak'
+            duration={this.state.longBreak}
+            increment={this.increment}
+            decrement={this.decrement}
+          />
+        )}
+        {!this.state.running && (
+          <Break
+            name='time'
+            duration={this.state.time}
+            increment={this.increment}
+            decrement={this.decrement}
+          />
+        )}
         {this.state.pomodoros.length ? <Pomodoro /> : null}
-        {this.state.info && <Info />}
+        {!this.state.running && (
+          <Info info={this.state.info} toggleInfo={this.toggleInfo} />
+        )}
       </div>
     );
   }
