@@ -3,7 +3,7 @@ import React from 'react'
 const Pomodoro = () => {
   return (
     <>
-      <span>🍅</span>
+      <span role="img" aria-label="Tomato">🍅</span>
     </>
   )
 }

@@ -37,7 +37,7 @@ const Info = (props) => {
             </ul>
             <p className='info__paragraph'>And there you have it! </p>
             <p className='info__paragraph'>Enjoy!</p>
-            <span className='info__emoji'>🥳</span>
+            <span className='info__emoji' role="img" aria-label="Party">🥳</span>
             <button className='info__button' onClick={props.toggleInfo}>
               Close
             </button>

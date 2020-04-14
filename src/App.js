@@ -8,16 +8,50 @@ import Break from './components/Break';
 
 export class App extends Component {
   state = {
-    runTime: 1500,
+    runTime: null,
     time: 1500,
     break: 300,
     longBreak: 900,
     running: false,
+    paused: false,
     info: false,
     pomodoros: [],
+    timeout: null,
+    interval: null,
   };
-  startReset = () => {
-    console.log('mousedown');
+
+  reset = (e) => {
+    if (e.type === 'mousedown') {
+      if (this.state.paused) {
+        this.setState({
+          timeout: setTimeout(() => {
+            this.setState({
+              runTime: null,
+              time: 1500,
+              break: 300,
+              longBreak: 900,
+              running: false,
+              paused: false,
+              info: false,
+              pomodoros: [],
+              timeout: null,
+              interval: null,
+            });
+          }, 1000),
+        });
+      }
+    }
+
+    if (e.type === 'mouseup') {
+      clearTimeout(this.state.timeout);
+      this.setState({ timeout: null });
+    }
+  };
+
+  startRunning = () => {
+    const newRuntime = { ...this.state }.time;
+    this.setState({ runTime: newRuntime });
+    this.setState({ running: true });
   };
   toggleInfo = (e) => {
     if (
@@ -27,15 +61,34 @@ export class App extends Component {
       this.setState({ info: !this.state.info });
     }
   };
+  togglePause = () => {
+    this.setState({ paused: !this.state.paused });
+  };
   toggleRunning = () => {
     this.setState({ running: !this.state.running });
   };
-  decrement = (name) => {
-    const updated = parseInt(this.state[name]);
-    this.setState({ [name]: updated - 1 });
+  decrement = (e, name) => {
+    if (e.type === 'click') {
+      const updated = parseInt({ ...this.state }[name]);
+      this.setState({ [name]: updated - 1 });
+    }
+    console.log(e.type);
+    if (e.type === 'mousedown') {
+      this.setState({
+        interval: setInterval(() => {
+          const updated = parseInt({ ...this.state }[name]);
+          this.setState({ [name]: updated - 1 });
+        }, 300),
+      });
+    }
+    if (e.type === 'mouseup') {
+      clearTimeout(this.state.interval);
+      this.setState({ interval: null });
+    }
   };
+
   increment = (name) => {
-    const updated = parseInt(this.state[name]);
+    const updated = parseInt({ ...this.state }[name]);
     this.setState({ [name]: updated + 1 });
   };
 
@@ -45,10 +98,14 @@ export class App extends Component {
         <Title />
         <Time runTime={this.state.runTime} />
         <Pie
+          paused={this.state.paused}
           time={this.state.time}
           runTime={this.state.runTime}
           toggleRunning={this.toggleRunning}
           running={this.state.running}
+          startRunning={this.startRunning}
+          togglePause={this.togglePause}
+          reset={this.reset}
         />
         {!this.state.running && (
           <Break
