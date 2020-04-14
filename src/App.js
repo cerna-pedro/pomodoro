@@ -73,6 +73,11 @@ export class App extends Component {
       this.setState({ [name]: updated - 1 });
     }
     console.log(e.type);
+    if (e.type === 'mouseup') {
+      console.log('hello');
+      clearInterval(this.state.interval);
+      this.setState({ interval: null });
+    }
     if (e.type === 'mousedown') {
       this.setState({
         interval: setInterval(() => {
@@ -80,10 +85,6 @@ export class App extends Component {
           this.setState({ [name]: updated - 1 });
         }, 300),
       });
-    }
-    if (e.type === 'mouseup') {
-      clearTimeout(this.state.interval);
-      this.setState({ interval: null });
     }
   };
 
