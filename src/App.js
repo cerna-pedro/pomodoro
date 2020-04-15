@@ -41,9 +41,8 @@ export class App extends Component {
     }
   };
 
-  startRunning =  () => {
-
-    if (this.state.runTime===null) {
+  startRunning = () => {
+    if (this.state.runTime === null) {
       console.log('beginning');
 
       this.setState({
@@ -51,16 +50,29 @@ export class App extends Component {
         running: !this.state.running,
         work: !this.state.work,
         interval: setInterval(() => {
-          this.setState({ runTime: { ...this.state }.runTime - 1 });
-          this.startRunning()
+          this.setState({ runTime: this.state.runTime - 1 });
+          this.startRunning();
         }, 1000),
       });
     }
-
-    if (this.state.runTime < 0) {
-      console.log('made it');
-      this.setState({ runTime: {...this.state}.longBreak });
+    if (this.state.pomodoros.length === 3 && this.state.work) {
+      this.setState({ runTime: this.state.longBreak, work: !this.state.work });
     }
+
+    if (this.state.runTime === 0 && this.state.work) {
+      console.log('switching from true to false');
+      this.setState({ runTime: this.state.break, work: !this.state.work });
+    }
+
+    if (this.state.runTime === 0 && !this.state.work) {
+      console.log('switching from false to true');
+      this.setState({
+        runTime: this.state.time,
+        work: !this.state.work,
+        pomodoros: [...this.state.pomodoros, this.state.pomodoros.length + 1],
+      });
+    }
+
     // if (this.state.runTime > 0) {
     //   this.setState({
     //     interval: setInterval(() => {
@@ -149,6 +161,9 @@ export class App extends Component {
         <Title />
         <Time runTime={this.state.runTime} />
         <Pie
+          break={this.state.break}
+          longBreak={this.state.longBreak}
+          pomodoros={this.state.pomodoros}
           paused={this.state.paused}
           time={this.state.time}
           runTime={this.state.runTime}
@@ -157,6 +172,7 @@ export class App extends Component {
           startRunning={this.startRunning}
           togglePause={this.togglePause}
           reset={this.reset}
+          work={this.state.work}
         />
         {!this.state.running && (
           <Break

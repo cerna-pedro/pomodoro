@@ -1,12 +1,13 @@
 import React from 'react';
 
 const Pie = (props) => {
+  const denominator= props.work ? props.time : props.pomodoros.length <=3  ? props.break : props.longBreak
   const pieStyle = {
-    backgroundColor: props.runTime / props.time < 0.5 ? '#c72230' : 'inherit',
+    backgroundColor: props.runTime / denominator < 0.5 ? '#c72230' : 'inherit',
     transform:
-      props.runTime / props.time < 0.5
-        ? `rotate(${1 - props.runTime / props.time - 0.5}turn)`
-        : `rotate(${1 - props.runTime / props.time}turn)`,
+      props.runTime / denominator < 0.5
+        ? `rotate(${1 - props.runTime / denominator - 0.5}turn)`
+        : `rotate(${1 - props.runTime / denominator}turn)`,
   };
   return (
     <>
