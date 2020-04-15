@@ -12,6 +12,7 @@ export class App extends Component {
     time: 5,
     break: 8,
     longBreak: 12,
+    min: 0,
     running: false,
     paused: false,
     info: false,
@@ -40,61 +41,68 @@ export class App extends Component {
     }
   };
 
-  startRunning = () => {
-    let repeat
-    console.log(repeat,'was cleared');
-    clearInterval(repeat)
-    if (!this.state.runTime) {
+  startRunning =  () => {
+
+    if (this.state.runTime===null) {
       console.log('beginning');
+
       this.setState({
         runTime: { ...this.state }.time,
         running: !this.state.running,
         work: !this.state.work,
+        interval: setInterval(() => {
+          this.setState({ runTime: { ...this.state }.runTime - 1 });
+          this.startRunning()
+        }, 1000),
       });
     }
 
-    repeat = setInterval(() => {
-      if (this.state.runTime >= 0) {
-        this.setState({ runTime: { ...this.state }.runTime - 1 });
-      }
-      if (this.state.runTime < 0) {
-        console.log('cleared');
-        clearInterval(repeat);
-        if (this.state.work) {
-          clearInterval(repeat);
-          this.setState({
-            work: !this.state.work,
-            runTime: { ...this.state }.break,
-          });
-          this.startRunning();
-          if (this.state.pomodoros.length < 4 && !this.state.work) {
-            clearInterval(repeat);
-            this.setState({
-              pomodoros: [
-                ...this.state.pomodoros,
-                this.state.pomodoros.length + 1,
-              ],
-              work: !this.state.work,
-            });
-            this.startRunning();
-          }
-        } else {
-          clearInterval(repeat);
-          this.setState({
-            runTime: 0,
-            time: { ...this.state }.time,
-            break: { ...this.state }.break,
-            longBreak: { ...this.state }.longBreak,
-            running: true,
-            paused: true,
-            info: false,
-            pomodoros: [...this.state.pomodoros],
-            timeout: null,
-            interval: null,
-          });
-        }
-      }
-    }, 1000);
+    if (this.state.runTime < 0) {
+      console.log('made it');
+      this.setState({ runTime: {...this.state}.longBreak });
+    }
+    // if (this.state.runTime > 0) {
+    //   this.setState({
+    //     interval: setInterval(() => {
+    //       this.setState({ runTime: { ...this.state }.runTime - 1 });
+    //     }, 1000),
+    //   });
+    // }
+    // if (this.state.runTime === 0 && this.state.interval) {
+    //   clearInterval(this.state.interval);
+    //   if (this.state.work) {
+    //     this.setState({
+    //       work: !this.state.work,
+    //       runTime: { ...this.state }.break,
+    //     });
+    //     this.startRunning();
+    //     if (this.state.pomodoros.length < 4 && !this.state.work) {
+    //       this.setState({
+    //         pomodoros: [
+    //           ...this.state.pomodoros,
+    //           this.state.pomodoros.length + 1,
+    //         ],
+    //         work: !this.state.work,
+    //       });
+    //       this.startRunning();
+    //     }
+    //   } else {
+    //     this.setState({
+    //       runTime: 0,
+    //       time: { ...this.state }.time,
+    //       break: { ...this.state }.break,
+    //       longBreak: { ...this.state }.longBreak,
+    //       running: true,
+    //       paused: true,
+    //       info: false,
+    //       pomodoros: [...this.state.pomodoros],
+    //       timeout: null,
+    //       interval: null,
+    //     });
+    //     return;
+    //   }
+    // }
+    // this.startRunning();
   };
   toggleInfo = (e) => {
     if (

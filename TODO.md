@@ -7,3 +7,4 @@
 3. Find better icons.
 4. Write up function for running.
 5. Add mouseleave event triggers.
+6. add work to pie props to properly render pie
