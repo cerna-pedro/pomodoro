@@ -4,6 +4,7 @@ const Pie = (props) => {
   const denominator= props.work ? props.time : props.pomodoros.length <=3  ? props.break : props.longBreak
   const pieStyle = {
     backgroundColor: props.runTime / denominator < 0.5 ? '#c72230' : 'inherit',
+  
     transform:
       props.runTime / denominator < 0.5
         ? `rotate(${1 - props.runTime / denominator - 0.5}turn)`
