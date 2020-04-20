@@ -9,10 +9,9 @@ import Break from './components/Break';
 export class App extends Component {
   state = {
     runTime: null,
-    time: 2,
-    break: 2,
-    longBreak: 4,
-    min: 0,
+    time: 1500,
+    break: 300,
+    longBreak: 900,
     running: false,
     paused: false,
     info: false,
@@ -32,7 +31,6 @@ export class App extends Component {
               time: this.state.time,
               break: this.state.break,
               longBreak: this.state.longBreak,
-              min: 0,
               running: false,
               paused: false,
               info: false,
@@ -45,22 +43,20 @@ export class App extends Component {
         });
       }
     }
-
-    if (e.type === 'mouseup') {
+    if (e.type === 'mouseup' || e.type === 'mouseleave') {
       clearTimeout(this.state.timeout);
       this.setState({ timeout: null });
     }
   };
 
+  playSound = () => {
+    let bell = new Audio('/sounds/bell.mp3');
+    bell.play();
+  };
+
   startRunning = () => {
     if (this.state.runTime === null) {
-      console.log(
-        'code block one',
-        'pomodoros',
-        this.state.pomodoros.length,
-        'work',
-        this.state.work
-      );
+      this.playSound();
       this.setState({
         runTime: this.state.time,
         running: true,
@@ -75,13 +71,7 @@ export class App extends Component {
       this.state.work &&
       this.state.pomodoros.length < 3
     ) {
-      console.log(
-        'code block two',
-        'pomodoros',
-        this.state.pomodoros.length,
-        'work',
-        this.state.work
-      );
+      this.playSound();
       this.setState({
         runTime: this.state.break,
         work: false,
@@ -92,13 +82,7 @@ export class App extends Component {
       !this.state.work &&
       this.state.pomodoros.length < 4
     ) {
-      console.log(
-        'code block three',
-        'pomodoros',
-        this.state.pomodoros.length,
-        'work',
-        this.state.work
-      );
+      this.playSound();
       this.setState({
         runTime: this.state.time,
         work: true,
@@ -108,26 +92,14 @@ export class App extends Component {
       this.state.work &&
       this.state.runTime === 0
     ) {
-      console.log(
-        'code block four',
-        'pomodoros',
-        this.state.pomodoros.length,
-        'work',
-        this.state.work
-      );
+      this.playSound();
       this.setState({
         runTime: this.state.longBreak,
         work: false,
         pomodoros: [...this.state.pomodoros, this.state.pomodoros.length + 1],
       });
     } else if (this.state.pomodoros.length > 3 && this.state.runTime === 0) {
-      console.log(
-        'code block five',
-        'pomodoros',
-        this.state.pomodoros.length,
-        'work',
-        this.state.work
-      );
+      this.playSound();
       clearInterval(this.state.interval);
       this.setState({
         runTime: 0,
@@ -146,6 +118,7 @@ export class App extends Component {
       return;
     }
   };
+
   toggleInfo = (e) => {
     if (
       e.target.className === 'info__button' ||
@@ -154,12 +127,13 @@ export class App extends Component {
       this.setState({ info: !this.state.info });
     }
   };
+
   togglePause = () => {
     if (this.state.runTime === 0) {
-      return
+      return;
     }
     clearInterval(this.state.interval);
-    this.setState({ paused: !this.state.paused });
+    this.setState({ interval: null, paused: !this.state.paused });
     if (this.state.paused) {
       this.setState({
         interval: setInterval(() => {
@@ -169,32 +143,47 @@ export class App extends Component {
       });
     }
   };
+
   toggleRunning = () => {
     this.setState({ running: !this.state.running });
   };
+  
   decrement = (e, name) => {
     if (e.type === 'click') {
-      const updated = parseInt({ ...this.state }[name]);
-      this.setState({ [name]: updated - 1 });
+      const updated = parseInt(this.state[name]);
+      updated > 1 && this.setState({ [name]: updated - 1 });
     }
-
-    if (e.type === 'mouseup') {
+    if (e.type === 'mouseup' || e.type === 'mouseleave') {
       clearInterval(this.state.interval);
       this.setState({ interval: null });
     }
     if (e.type === 'mousedown') {
       this.setState({
         interval: setInterval(() => {
-          const updated = parseInt({ ...this.state }[name]);
-          this.setState({ [name]: updated - 1 });
+          const updated = parseInt(this.state[name]);
+          updated > 1 && this.setState({ [name]: updated - 1 });
         }, 200),
       });
     }
   };
 
-  increment = (name) => {
-    const updated = parseInt({ ...this.state }[name]);
-    this.setState({ [name]: updated + 1 });
+  increment = (e, name) => {
+    if (e.type === 'click') {
+      const updated = parseInt(this.state[name]);
+      this.setState({ [name]: updated + 1 });
+    }
+    if (e.type === 'mouseup' || e.type === 'mouseleave') {
+      clearInterval(this.state.interval);
+      this.setState({ interval: null });
+    }
+    if (e.type === 'mousedown') {
+      this.setState({
+        interval: setInterval(() => {
+          const updated = parseInt(this.state[name]);
+          this.setState({ [name]: updated + 1 });
+        }, 200),
+      });
+    }
   };
 
   render() {
@@ -209,7 +198,6 @@ export class App extends Component {
           paused={this.state.paused}
           time={this.state.time}
           runTime={this.state.runTime}
-          toggleRunning={this.toggleRunning}
           running={this.state.running}
           startRunning={this.startRunning}
           togglePause={this.togglePause}

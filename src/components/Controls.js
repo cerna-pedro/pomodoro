@@ -6,14 +6,18 @@ const Controls = (props) => {
       <span
         onClick={(e) => props.decrement(e,props.name)}
         onMouseDown={(e) => props.decrement(e,props.name)}
+        onMouseUp={(e) => props.decrement(e, props.name)}
+        onMouseLeave={(e)=>props.decrement(e,props.name)}
         role='img'
         aria-label='Minus'
-        onMouseUp={(e) => props.decrement(e,props.name)}
       >
         ➖
       </span>
       <span
-        onClick={() => props.increment(props.name)}
+        onClick={(e) => props.increment(e, props.name)}
+        onMouseDown={(e) => props.increment(e, props.name)}
+        onMouseUp={(e)=>props.increment(e,props.name)}
+        onMouseLeave={(e)=>props.increment(e,props.name)}
         role='img'
         aria-label='Plus'
       >

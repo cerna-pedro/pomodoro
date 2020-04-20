@@ -34,13 +34,22 @@ const Info = (props) => {
               </li>
               <li>When the timer rings, take a short, 5-minute break.</li>
               <li>After 4 Pomodoros, take a longer, 15-minute break.</li>
+              <li>Repeat.</li>
             </ul>
-            <p className='info__paragraph'>And there you have it! </p>
-            <p className='info__paragraph'>Enjoy!</p>
-            <span className='info__emoji' role="img" aria-label="Party">🥳</span>
-            <button className='info__button' onClick={props.toggleInfo}>
-              Close
-            </button>
+            <p className='info__paragraph'>
+              When the timer starts, you can click on the circle-shaped meter to
+              pause the timer. Once paused, you can click and hold on the
+              circle-shaped meter to reset the timer.
+            </p>
+            <p className='info__paragraph'>And there you have it... enjoy! </p>
+            <span className='info__emoji' role='img' aria-label='Party'>
+              🥳
+            </span>
+            <div className='info__button--container'>
+              <button className='info__button' onClick={props.toggleInfo}>
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}

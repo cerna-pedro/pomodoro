@@ -1,39 +1,76 @@
 import React from 'react';
+import styled from 'styled-components';
 
-const Pie = (props) => {
-  const denominator= props.work ? props.time : props.pomodoros.length <=3  ? props.break : props.longBreak
-  const pieStyle = {
-    backgroundColor: props.runTime / denominator < 0.5 ? '#c72230' : 'inherit',
-  
-    transform:
-      props.runTime / denominator < 0.5
-        ? `rotate(${1 - props.runTime / denominator - 0.5}turn)`
-        : `rotate(${1 - props.runTime / denominator}turn)`,
-  };
-  return (
-    <>
-      {!props.running && !props.paused && (
-        <div className='pie__start'>
-          <button type='submit' onClick={props.startRunning}>Start</button>
-        </div>
-      )}
-      {props.running && (
-        <div className='pie__container'>
-          <div className='pie'>
-            <div className='pie__before' style={pieStyle}></div>
+let denominator, rotationOne, rotationTwo;
+
+const RotatingPie = styled.div`
+${(props) => {
+  denominator = props.work
+    ? props.time
+    : props.pomodoros.length <= 3
+    ? props.break
+    : props.longBreak;
+  rotationOne = 1 - props.runTime / denominator - 0.5;
+  rotationTwo = 1 - props.runTime / denominator;
+}}
+  background-color: ${(props) =>
+    props.runTime / denominator < 0.5 ? '#c72230' : 'inherit'};
+  transform: ${(props) => {
+    return props.runTime / denominator < 0.5
+      ? `rotate(${rotationOne}turn)`
+      : `rotate(${rotationTwo}turn)`;
+}};
+`;
+
+class Pie extends React.Component {
+  render() {
+    return (
+      <>
+        {!this.props.running && !this.props.paused && (
+          <div className='pie__start'>
+            <button type='submit' onClick={this.props.startRunning}>
+              Start
+            </button>
           </div>
-          <div
-            className='pie__controls'
-            onClick={props.togglePause}
-            onMouseDown={props.reset}
-            onMouseUp={props.reset}
-          >
-            {!props.paused ? <span role="img" aria-label="Pause">⏸</span> : <><span role="img" aria-label="Play">▶️</span><span>Hold To Reset</span></>}
+        )}
+        {this.props.running && (
+          <div className='pie__container'>
+            <div className='pie'>
+              <RotatingPie
+                className='pie__before'
+                break={this.props.break}
+                longBreak={this.props.longBreak}
+                pomodoros={this.props.pomodoros}
+                time={this.props.time}
+                runTime={this.props.runTime}
+                work={this.props.work}
+              />
+            </div>
+            <div
+              className='pie__controls'
+              onClick={this.props.togglePause}
+              onMouseDown={this.props.reset}
+              onMouseUp={this.props.reset}
+              onMouseLeave={this.props.reset}
+            >
+              {!this.props.paused ? (
+                <span role='img' aria-label='Pause'>
+                  ⏸
+                </span>
+              ) : (
+                <>
+                  <span role='img' aria-label='Play'>
+                    ▶️
+                  </span>
+                  <span className="pie__controls--reset">Hold To Reset</span>
+                </>
+              )}
+            </div>
           </div>
-        </div>
-      )}
-    </>
-  );
-};
+        )}
+      </>
+    );
+  }
+}
 
 export default Pie;
