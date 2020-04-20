@@ -5,6 +5,7 @@ import Time from './components/Time';
 import Pomodoro from './components/Pomodoro';
 import Info from './components/Info';
 import Break from './components/Break';
+import bellSound from './sounds/bell.mp3';
 
 export class App extends Component {
   state = {
@@ -50,7 +51,7 @@ export class App extends Component {
   };
 
   playSound = () => {
-    let bell = new Audio('/sounds/bell.mp3');
+    let bell = new Audio(bellSound);
     bell.play();
   };
 
@@ -147,7 +148,7 @@ export class App extends Component {
   toggleRunning = () => {
     this.setState({ running: !this.state.running });
   };
-  
+
   decrement = (e, name) => {
     if (e.type === 'click') {
       const updated = parseInt(this.state[name]);
