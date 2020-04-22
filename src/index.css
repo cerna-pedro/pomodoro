@@ -152,21 +152,21 @@ button:hover {
 }
 
 .info__overlay {
-  background-color: var(--overlay-background);
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  height: 100%;
+  min-height: 100%;
   width: 100%;
+  background-color: var(--overlay-background);
   z-index: 2;
   overflow: auto;
 }
 
 .info__modal {
   text-align: justify;
-  position: relative;
   background-color: var(--word-background);
   padding: 1rem;
+  min-height: 100%;
   width: 80%;
   margin: 1rem auto;
   z-index: 3;

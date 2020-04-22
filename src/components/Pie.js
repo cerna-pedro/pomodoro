@@ -52,6 +52,8 @@ class Pie extends React.Component {
               onMouseDown={this.props.reset}
               onMouseUp={this.props.reset}
               onMouseLeave={this.props.reset}
+              onTouchStart={this.props.reset}
+              onTouchEnd={this.props.reset}
             >
               {!this.props.paused ? (
                 <span role='img' aria-label='Pause'>

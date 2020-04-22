@@ -7,7 +7,9 @@ const Controls = (props) => {
         onClick={(e) => props.decrement(e,props.name)}
         onMouseDown={(e) => props.decrement(e,props.name)}
         onMouseUp={(e) => props.decrement(e, props.name)}
-        onMouseLeave={(e)=>props.decrement(e,props.name)}
+        onMouseLeave={(e) => props.decrement(e, props.name)}
+        onTouchStart={(e) => props.decrement(e, props.name)}
+        onTouchEnd={(e) => props.decrement(e, props.name)}
         role='img'
         aria-label='Minus'
       >
@@ -17,7 +19,9 @@ const Controls = (props) => {
         onClick={(e) => props.increment(e, props.name)}
         onMouseDown={(e) => props.increment(e, props.name)}
         onMouseUp={(e)=>props.increment(e,props.name)}
-        onMouseLeave={(e)=>props.increment(e,props.name)}
+        onMouseLeave={(e) => props.increment(e, props.name)}
+        onTouchStart={(e)=>props.increment(e,props.name)}
+        onTouchEnd={(e)=>props.increment(e,props.name)}
         role='img'
         aria-label='Plus'
       >

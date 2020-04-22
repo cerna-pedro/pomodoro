@@ -23,7 +23,7 @@ export class App extends Component {
   };
 
   reset = (e) => {
-    if (e.type === 'mousedown') {
+    if (e.type === 'mousedown' || e.type === 'touchstart') {
       if (this.state.paused) {
         this.setState({
           timeout: setTimeout(() => {
@@ -44,7 +44,11 @@ export class App extends Component {
         });
       }
     }
-    if (e.type === 'mouseup' || e.type === 'mouseleave') {
+    if (
+      e.type === 'mouseup' ||
+      e.type === 'mouseleave' ||
+      e.type === 'touchend'
+    ) {
       clearTimeout(this.state.timeout);
       this.setState({ timeout: null });
     }
@@ -154,11 +158,15 @@ export class App extends Component {
       const updated = parseInt(this.state[name]);
       updated > 1 && this.setState({ [name]: updated - 1 });
     }
-    if (e.type === 'mouseup' || e.type === 'mouseleave') {
+    if (
+      e.type === 'mouseup' ||
+      e.type === 'mouseleave' ||
+      e.type === 'touchend'
+    ) {
       clearInterval(this.state.interval);
       this.setState({ interval: null });
     }
-    if (e.type === 'mousedown') {
+    if (e.type === 'mousedown' || e.type === 'touchstart') {
       this.setState({
         interval: setInterval(() => {
           const updated = parseInt(this.state[name]);
@@ -173,11 +181,15 @@ export class App extends Component {
       const updated = parseInt(this.state[name]);
       this.setState({ [name]: updated + 1 });
     }
-    if (e.type === 'mouseup' || e.type === 'mouseleave') {
+    if (
+      e.type === 'mouseup' ||
+      e.type === 'mouseleave' ||
+      e.type === 'touchend'
+    ) {
       clearInterval(this.state.interval);
       this.setState({ interval: null });
     }
-    if (e.type === 'mousedown') {
+    if (e.type === 'mousedown' || e.type === 'touchstart') {
       this.setState({
         interval: setInterval(() => {
           const updated = parseInt(this.state[name]);
